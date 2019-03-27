@@ -6,8 +6,7 @@
       style="max-height: 500px"
       class="scroll-y"
     >
-            <v-card-text class="py-0">
-                
+            <v-card-text class="py-0">  
       <v-timeline
         align-top
       >
@@ -22,9 +21,14 @@
       </template>
       <v-card class="elevation-2">
         <v-card-title class="headline">Lorem ipsum</v-card-title>
-        <v-card-text>
-          Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
-        </v-card-text>
+        <div class="container">
+          <img alt="" id="imagencita" width="40%" height="40%" @click.stop="dialog = true">
+          <v-dialog 
+          v-model="dialog"
+          width="500">
+            <img id="imagencititita" width="100%" height="100%">
+          </v-dialog>
+        </div>
       </v-card>
     </v-timeline-item>
       </v-timeline>
@@ -42,7 +46,6 @@
               type="file"
               style="display: none"
               ref="image"
-              
               @change="onFilePicked"
               >
             </v-btn>
@@ -61,17 +64,27 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
+import $ from 'jquery';
+import { constants } from 'fs';
+const socket = io('157.230.169.186:3000');
+
 export default {
   data: ()=> ({
     message: '',
     imageName: '',
 		imageUrl: '',
-		imageFile: ''
+    imageFile: '',
+    img: '',
+    dialog: false
   }),
   methods: {
     send(){
-      console.log(this.message)
-      this.message = null
+      socket.emit("chat", this.message);
+      this.message = null;
+      socket.on("chat", (mensaje)=>{
+        console.log(mensaje);
+      })
     },
     pickFile () {
       this.$refs.image.click ()
@@ -88,15 +101,21 @@ export default {
 				fr.addEventListener('load', () => {
 					this.imageUrl = fr.result
           this.imageFile = files[0] // this is an image file that can be sent to server...
-          //SOCKET HERE!! 
-          console.log(this.imageFile)
+          socket.emit("sendpath", this.imageFile)
+          socket.on("sendpath", function(info){
+              var image = new Image();
+              image.src = 'data:image/jpeg;base64,' + info.buffer;
+              $('#imagencita').attr('src',image.src);
+              $('#imagencititita').attr('src',image.src);
+          })
 				})
 			} else {
 				this.imageName = ''
 				this.imageFile = ''
 				this.imageUrl = ''
 			}
-		}
+    },
+    
   }
 }
 </script>

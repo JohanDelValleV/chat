@@ -7,7 +7,7 @@ const server = require('http').Server(aplicacion)
 const socket = require('socket.io')(server)
 const os = require('os')
 
-var HOST = 'redespolitecnica5.ddns.net'
+var HOST = 'JOHAN-DELVALLE'
 var PORT =  7000
 
 var ser = net.createServer(function(so){
