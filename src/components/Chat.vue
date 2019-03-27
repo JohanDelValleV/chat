@@ -32,19 +32,8 @@
     </v-container>
         </v-layout>
         <v-layout>
-            <v-btn 
-            fab dark color="cyan"
-            slot="activator"
-            @click="pickFile"
-            >
-              <v-icon dark>add</v-icon>
-              <input
-              type="file"
-              style="display: none"
-              ref="image"
-              
-              @change="onFilePicked"
-              >
+            <v-btn fab dark color="cyan">
+            <v-icon dark>add</v-icon>
             </v-btn>
            <v-textarea
            v-model="message"
@@ -63,39 +52,13 @@
 <script>
 export default {
   data: ()=> ({
-    message: '',
-    imageName: '',
-		imageUrl: '',
-		imageFile: ''
+    message: ''
   }),
   methods: {
     send(){
       console.log(this.message)
       this.message = null
-    },
-    pickFile () {
-      this.$refs.image.click ()
-    },
-    onFilePicked (e) {
-			const files = e.target.files
-			if(files[0] !== undefined) {
-				this.imageName = files[0].name
-				if(this.imageName.lastIndexOf('.') <= 0) {
-					return
-				}
-				const fr = new FileReader ()
-				fr.readAsDataURL(files[0])
-				fr.addEventListener('load', () => {
-					this.imageUrl = fr.result
-          this.imageFile = files[0] // this is an image file that can be sent to server...
-          //SOCKET HERE!! console.log(this.imageFile)
-				})
-			} else {
-				this.imageName = ''
-				this.imageFile = ''
-				this.imageUrl = ''
-			}
-		}
+    }
   }
 }
 </script>
