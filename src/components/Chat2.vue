@@ -88,7 +88,8 @@ export default {
 				fr.addEventListener('load', () => {
 					this.imageUrl = fr.result
           this.imageFile = files[0] // this is an image file that can be sent to server...
-          //SOCKET HERE!! console.log(this.imageFile)
+          //SOCKET HERE!! 
+          console.log(this.imageFile)
 				})
 			} else {
 				this.imageName = ''

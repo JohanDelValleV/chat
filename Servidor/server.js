@@ -1,6 +1,7 @@
 var express = require('express')
 var aplicacion = express()
 
+const fs = require('fs')
 const net = require('net')
 const server = require('http').Server(aplicacion)
 const socket = require('socket.io')(server)
