@@ -89,7 +89,7 @@ export default {
 					this.imageUrl = fr.result
           this.imageFile = files[0] // this is an image file that can be sent to server...
           //SOCKET HERE!! 
-          console.log(this.imageFile)
+          console.log(fr.readAsBinaryString(file))
 				})
 			} else {
 				this.imageName = ''
