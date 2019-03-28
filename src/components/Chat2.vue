@@ -11,7 +11,7 @@
         align-top
       >
     <v-timeline-item
-      v-for="n in 4"
+      v-for="n in 2"
       :key="n"
       color="red lighten-2" 
       right
@@ -26,8 +26,18 @@
           <v-dialog 
           v-model="dialog"
           width="500">
+          <v-card>
             <img id="imagencititita" width="100%" height="100%">
+          </v-card>
+            
           </v-dialog>
+        </div>
+        <div id="viewPdf">
+          <object
+            id="pdf"
+            width="100%"
+            height="100%">
+          </object>
         </div>
       </v-card>
     </v-timeline-item>
@@ -65,8 +75,10 @@
 
 <script>
 import io from 'socket.io-client';
+import path from 'path';
 import $ from 'jquery';
 import { constants } from 'fs';
+import PDFObject from 'pdfobject';
 const socket = io('157.230.169.186:3000');
 
 export default {
@@ -86,6 +98,9 @@ export default {
         console.log(mensaje);
       })
     },
+    getFileExtension(filename){
+      return filename.split('.').pop();
+    },
     pickFile () {
       this.$refs.image.click ()
     },
@@ -104,7 +119,12 @@ export default {
           socket.emit("sendpath", this.imageFile)
           socket.on("sendpath", function(info){
               var image = new Image();
-              image.src = 'data:image/jpeg;base64,' + info.buffer;
+              var pdf = info.buffer;
+              PDFObject.embed(pdf, '#viewPdf')
+              console.log(pdf)
+              $('#pdf').attr('data', 'data:application/pdf;base64,'+pdf);
+              $('#pdf').attr('src', pdf);
+              image.src = 'data:*;base64,' + info.buffer;
               $('#imagencita').attr('src',image.src);
               $('#imagencititita').attr('src',image.src);
           })
