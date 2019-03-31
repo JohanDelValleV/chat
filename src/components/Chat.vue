@@ -45,7 +45,7 @@
               <template v-slot:opposite>
                 <span>{{msg.hora}}</span>
               </template>
-              <v-card class="elevation-2" width="500px">
+              <v-card class="elevation-2" width="300px">
                 <v-card-text>{{msg.mensaje}}</v-card-text>
               </v-card>
               </v-timeline-item> 
@@ -62,7 +62,7 @@
                 <template v-slot:opposite>
                   <span>{{msg.hora}}</span>
                 </template>
-                <v-card class="elevation-2" width="500px" dark  color="secondary">
+                <v-card class="elevation-2" width="300px" dark  color="secondary">
                   <v-card-text>{{msg.mensaje}}</v-card-text>
                 </v-card>
               </v-timeline-item> 

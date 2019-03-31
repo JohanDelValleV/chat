@@ -7,6 +7,7 @@ import Maria from '@/components/Maria'
 Vue.use(Router)
 
 const router = new Router({
+    mode: 'history',
     routes: [
         {
             path: '/',
