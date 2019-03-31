@@ -117,11 +117,11 @@ export default {
     text: 'Entregado.',
     message: '',
     imageName: '',
-		imageUrl: '',
+	imageUrl: '',
     imageFile: '',
     img: '',
-    usuario: 'Juan',
-    remitente: 'Maria',
+    usuario: 'Maria',
+    remitente: 'Juan',
     dialog: false,
     messages:new Array(),
     avatarRemitente:'',
@@ -132,11 +132,10 @@ export default {
       console.log(':)')
       
     });
-    socket.emit('callbackjuan',true)
-    socket.on('juan',(mensaje)=>{
-      this.avatarRemitente=mensaje["avatar"]
-      this.messages.unshift(mensaje)
-      socket.emit('callbackjuan',true)
+    socket.on('maria',(mensaje)=>{
+        this.avatarRemitente=mensaje["avatar"]
+        this.messages.unshift(mensaje)
+        socket.emit('callbackmaria',true)
     })
     
   },
@@ -144,16 +143,16 @@ export default {
     send(){
       if(this.message.trim()!=""){
         var time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
-        var mensaje={"usuario":this.usuario,"mensaje":this.message,"hora":time,"posicion":"right","avatar":"https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"};
+        var mensaje={"usuario":this.usuario,"mensaje":this.message,"hora":time,"posicion":"right","avatar":this.avatar};
         this.messages.unshift(mensaje)
         this.messages=this.messages;
         this.message = null;
-        socket.emit('maria', mensaje);+
-        socket.on('callbackmaria',(callback)=>{
+        socket.emit('juan', mensaje);+
+        socket.on('callbackjuan',(callback)=>{
           if(callback){
+            
             this.text=time+' entregado.';
             this.snackbar=true;
-
           }
         })        
         
