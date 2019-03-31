@@ -1,51 +1,63 @@
 <template>
     <v-app>
+      <v-toolbar dark color="primary">
+          <img width="45px" src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairMiaWallace&accessoriesType=Sunglasses&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Surprised&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale">
+         <v-toolbar-title class="white--text">{{remitente}}</v-toolbar-title>
+         <v-spacer></v-spacer>
+      </v-toolbar>
         <v-layout>
-            <v-container
-      id="scroll-target"
-      style="max-height: 562.5px"
-      class="scroll-y"
-    >
-            <v-card-text class="py-0">  
-      <v-timeline
-        align-top
-      >
-    <v-timeline-item
-      v-for="n in 2"
-      :key="n"
-      hide-dot
-      color="red lighten-2" 
-      right
-    >
-      <template v-slot:opposite>
-        <span>Tus eu perfecto</span>
-      </template>
-      <v-card class="elevation-2">
-        <v-card-title class="headline">Lorem ipsum</v-card-title>
-        <div class="container">
-          <img alt="" id="imagencita" width="40%" height="40%" @click.stop="dialog = true">
-          <v-dialog 
-          v-model="dialog"
-          width="500">
-          <v-card>
-            <img id="imagencititita" width="100%" height="100%">
-          </v-card>
-            
-          </v-dialog>
-        </div>
-        <div id="viewPdf">
-          <object
-            id="pdf"
-            width="100%"
-            height="100%">
-          </object>
-        </div>
-      </v-card>
-    </v-timeline-item>
-      </v-timeline>
-    </v-card-text>
+          <v-container
+          id="scroll-target"
+          class="scroll-y"
+          >
+          <v-card-text class="py-0" id="timeline">  
+          <v-timeline
+          align-top
+          >
+          <!-- <v-slide-x-transition
+            group
+          > -->
+          <div v-for="msg in messages" :key="msg.time">
+              <div v-if="msg.usuario==usuario">
+              <v-timeline-item
+                right
+              >
+              <template v-slot:icon>
+                <v-avatar>
+                  <img :src="msg.avatar">
+                </v-avatar>
+              </template>
+              <template v-slot:opposite>
+                <span>{{msg.hora}}</span>
+              </template>
+              <v-card class="elevation-2" width="500px">
+                <v-card-text>{{msg.mensaje}}</v-card-text>
+              </v-card>
+              </v-timeline-item> 
+            </div>
+            <div v-else>
+              <v-timeline-item
+                left
+              >
+                <template v-slot:icon>
+                  <v-avatar>
+                    <img :src="msg.avatar">
+                  </v-avatar>
+                </template>
+                <template v-slot:opposite>
+                  <span>{{msg.hora}}</span>
+                </template>
+                <v-card class="elevation-2" width="500px" dark  color="secondary">
+                  <v-card-text>{{msg.mensaje}}</v-card-text>
+                </v-card>
+              </v-timeline-item> 
+            </div>
+          </div>
+              <!-- </v-slide-x-transition>    -->
+            </v-timeline>
+        </v-card-text>
     </v-container>
-        </v-layout>
+  </v-layout>
         <v-layout>
             <v-btn 
             outline
@@ -81,7 +93,7 @@ import path from 'path';
 import $ from 'jquery';
 import { constants } from 'fs';
 import PDFObject from 'pdfobject';
-const socket = io('157.230.169.186:3000');
+const socket = io('127.0.0.1:3030');
 
 export default {
   data: ()=> ({
@@ -90,15 +102,36 @@ export default {
 		imageUrl: '',
     imageFile: '',
     img: '',
-    dialog: false
+    usuario: 'Juan',
+    remitente: 'Maria',
+    dialog: false,
+    avatar:'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned',
+    messages:new Array(),
   }),
+  mounted() {
+    socket.on('connect', function () {
+      console.log(':)')
+      
+    });
+    socket.on('juan',(mensaje)=>{
+        this.messages.unshift(mensaje)
+      })
+  },
   methods: {
     send(){
-      socket.emit("chat", this.message);
-      this.message = null;
-      socket.on("chat", (mensaje)=>{
-        console.log(mensaje);
-      })
+      if(this.message.trim()!=""){
+        var time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
+        var mensaje={"usuario":this.usuario,"mensaje":this.message,"hora":time,"posicion":"right","avatar":"https://avataaars.io/?avatarStyle=Circle&topType=ShortHairFrizzle&accessoriesType=Prescription02&hairColor=Black&facialHairType=MoustacheMagnum&facialHairColor=BrownDark&clotheType=BlazerSweater&clotheColor=Black&eyeType=Default&eyebrowType=FlatNatural&mouthType=Default&skinColor=Tanned"};
+        this.messages.unshift(mensaje)
+        this.messages=this.messages;
+        socket.emit('maria', mensaje, (callback) => {
+            console.log(callback);
+        });
+        this.message = null;
+      }
+      else{
+        this.message = null;
+      }
     },
     getFileExtension(filename){
       return filename.split('.').pop();
@@ -142,6 +175,9 @@ export default {
 }
 </script>
 
-<style >
-
+<style>
+#scroll-target{
+  height: 500px;
+  width: 100%;
+}
 </style>

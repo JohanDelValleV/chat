@@ -10,6 +10,8 @@ Vue.use(Vuetify, {
     primary: '#BF360C',
     secondary:  '#E64A19',
     accent: '#FF3D00',
+    mechat:'#2962FF',
+    otherchat:'#C51162',
   }
 })
 
