@@ -3,7 +3,7 @@
         <v-layout>
             <v-container
       id="scroll-target"
-      style="max-height: 500px"
+      style="max-height: 562.5px"
       class="scroll-y"
     >
             <v-card-text class="py-0">  
@@ -13,6 +13,7 @@
     <v-timeline-item
       v-for="n in 2"
       :key="n"
+      hide-dot
       color="red lighten-2" 
       right
     >
@@ -47,7 +48,8 @@
         </v-layout>
         <v-layout>
             <v-btn 
-            fab dark color="cyan"
+            outline
+            fab dark color="primary"
             slot="activator"
             @click="pickFile"
             >
@@ -59,12 +61,12 @@
               @change="onFilePicked"
               >
             </v-btn>
-           <v-textarea
-           v-model="message"
-            height="75px"
-            outline
-            success
-            @keyup.enter="send"
+            <v-textarea
+              color="primary"
+              v-model="message"
+              height="75px"
+              outline
+              @keyup.enter="send"
             ></v-textarea>
             <v-btn fab dark color="primary">
             <v-icon dark @click="send">send</v-icon>
@@ -140,6 +142,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 
 </style>

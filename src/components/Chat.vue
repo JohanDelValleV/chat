@@ -3,7 +3,7 @@
         <v-layout>
             <v-container
       id="scroll-target"
-      style="max-height: 500px"
+      style="max-height: 562.5px"
       class="scroll-y"
     >
             <v-card-text class="py-0">  
@@ -11,8 +11,9 @@
         align-top
       >
     <v-timeline-item
-      v-for="n in 4"
+      v-for="n in 2"
       :key="n"
+      hide-dot
       color="red lighten-2" 
       right
     >
@@ -26,8 +27,18 @@
           <v-dialog 
           v-model="dialog"
           width="500">
+          <v-card>
             <img id="imagencititita" width="100%" height="100%">
+          </v-card>
+            
           </v-dialog>
+        </div>
+        <div id="viewPdf">
+          <object
+            id="pdf"
+            width="100%"
+            height="100%">
+          </object>
         </div>
       </v-card>
     </v-timeline-item>
@@ -37,7 +48,8 @@
         </v-layout>
         <v-layout>
             <v-btn 
-            fab dark color="cyan"
+            outline
+            fab dark color="primary"
             slot="activator"
             @click="pickFile"
             >
@@ -49,12 +61,12 @@
               @change="onFilePicked"
               >
             </v-btn>
-           <v-textarea
-           v-model="message"
-            height="75px"
-            outline
-            success
-            @keyup.enter="send"
+            <v-textarea
+              color="primary"
+              v-model="message"
+              height="75px"
+              outline
+              @keyup.enter="send"
             ></v-textarea>
             <v-btn fab dark color="primary">
             <v-icon dark @click="send">send</v-icon>
@@ -65,8 +77,10 @@
 
 <script>
 import io from 'socket.io-client';
+import path from 'path';
 import $ from 'jquery';
 import { constants } from 'fs';
+import PDFObject from 'pdfobject';
 const socket = io('157.230.169.186:3000');
 
 export default {
@@ -86,6 +100,9 @@ export default {
         console.log(mensaje);
       })
     },
+    getFileExtension(filename){
+      return filename.split('.').pop();
+    },
     pickFile () {
       this.$refs.image.click ()
     },
@@ -104,7 +121,12 @@ export default {
           socket.emit("sendpath", this.imageFile)
           socket.on("sendpath", function(info){
               var image = new Image();
-              image.src = 'data:image/jpeg;base64,' + info.buffer;
+              var pdf = info.buffer;
+              PDFObject.embed(pdf, '#viewPdf')
+              console.log(pdf)
+              $('#pdf').attr('data', 'data:application/pdf;base64,'+pdf);
+              $('#pdf').attr('src', pdf);
+              image.src = 'data:*;base64,' + info.buffer;
               $('#imagencita').attr('src',image.src);
               $('#imagencititita').attr('src',image.src);
           })
@@ -120,6 +142,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 
 </style>

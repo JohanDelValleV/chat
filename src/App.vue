@@ -1,19 +1,12 @@
 <template>
-  <v-app>
-    <v-content>
-      <Chat2/>
-    </v-content>
-  </v-app>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-import Chat2 from './components/Chat2'
-
 export default {
   name: 'App',
-  components: {
-    Chat2
-  },
   data () {
     return {
       //
