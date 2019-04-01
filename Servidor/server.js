@@ -30,8 +30,19 @@ app.use('/data', express.static('data'));
 
 io.on('connection', (socket) => {
 	console.log('Socket connected.');
-
-	var count = 0;
+	socket.on('maria', (datos)=>{
+        socket.broadcast.emit('maria', datos);
+    })
+    socket.on('juan',function (datos) {
+        console.log(datos)
+        socket.broadcast.emit('juan', datos);
+    })
+    socket.on('callbackmaria',(callback)=>{
+        socket.broadcast.emit('callbackmaria', callback);
+    })
+    socket.on('callbackjuan',(callback)=>{
+        socket.broadcast.emit('callbackjuan', callback);
+    })
 	var uploader = new SocketIOFile(socket, {
 		uploadDir: 'data',							// simple directory
 		// accepts: ['audio/mpeg', 'audio/mp3'],		// chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
