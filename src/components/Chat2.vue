@@ -45,7 +45,7 @@
               <template v-slot:opposite>
                 <span>{{msg.hora}}</span>
               </template>
-              <v-card id="action" class="elevation-2" width="300px">
+              <v-card :id="msg.id" class="elevation-2" width="300px">
                 <v-card-text>{{msg.mensaje}}</v-card-text>
               </v-card>
               </v-timeline-item> 
@@ -112,6 +112,7 @@ import SocketIOFileClient from 'socket.io-file-client';
 const socket = io('http://localhost:3030');
 var uploader = new SocketIOFileClient(socket);
 var auxMessage = '';
+var contador = 0;
 export default {
   data: ()=> ({
     snackbar: false,
@@ -131,7 +132,7 @@ export default {
   }),
   mounted() {
     socket.on('connect', function () {
-      console.log(':)')
+      console.log(contador)
       
     });
     socket.on('maria',(mensaje)=>{
@@ -184,7 +185,7 @@ export default {
           });
           uploader.on('complete', function(fileInfo) {
             console.log('Upload Complete', fileInfo);
-            document.getElementById('action').addEventListener('click', function(){
+            document.getElementById(contador).addEventListener('click', function(){
               console.log("data/"+fileInfo.name)
               var liga = "http://127.0.0.1:3030/data/"+fileInfo.name;
               var content = '';
@@ -215,6 +216,7 @@ export default {
                 // some error handling should be done here...
               };
               request.send('content=' + content);
+              contador ++;
             });
           });
           uploader.on('error', function(err) {
@@ -223,13 +225,14 @@ export default {
           uploader.on('abort', function(fileInfo) {
             console.log('Aborted: ', fileInfo);
           });
-          auxMessage = "Hola"
+          auxMessage = ''
           var fileEl = document.getElementById('file');
-          var uploadIds = uploader.upload(fileEl);
+          uploader.upload(fileEl);
           let time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
-          let mensaje ={"usuario":this.usuario,"mensaje":auxMessage,"hora":time,"posicion":"right","avatar":this.avatar};
-          this.messages.unshift(mensaje)
-          this.messages=this.messages
+          let mensaje ={"usuario":this.usuario,"mensaje":auxMessage,"hora":time,"posicion":"right","avatar":this.avatar, "id": contador};
+          this.messages.unshift(mensaje);
+          this.messages=this.messages;
+          
     },
 
   }
