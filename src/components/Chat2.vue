@@ -48,7 +48,8 @@
               <v-card class="elevation-2" min-width="300px">
                 <div v-if="msg.href!=null">
                    <v-card-text><a target="_blank" v-bind:href="msg.href">{{msg.mensaje}}</a>
-                      <a class="link-recibido" v-bind:href="msg.href" download><v-spacer></v-spacer><v-icon color="secondary">get_app</v-icon></a>
+                      <v-spacer></v-spacer>
+                      <a v-bind:href="msg.href" download><v-icon color="secondary">get_app</v-icon></a>
                     </v-card-text>  
                 </div>
                   <div v-else>
