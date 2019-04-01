@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Chat from '@/components/Chat'
 import Chat2 from '@/components/Chat2'
-import Maria from '@/components/Maria'
 
 Vue.use(Router)
 
@@ -23,11 +22,6 @@ const router = new Router({
             path: '/chat2',
             name: 'chat2',
             component: Chat2,
-        },
-        {
-            path: '/maria',
-            name: 'maria',
-            component: Maria,
         },
         
         

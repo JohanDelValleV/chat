@@ -47,9 +47,9 @@
               </template>
               <v-card class="elevation-2" min-width="300px">
                 <div v-if="msg.href!=null">
-                    <v-card-text><a target="_blank" v-bind:href="msg.href">{{msg.mensaje}}</a>
+                    <v-card-text><a target="_blank" v-bind:href="msg.href" download>{{msg.mensaje}}</a>
                       <v-spacer></v-spacer>
-                      <a v-bind:href="msg.href" download><v-icon color="secondary">get_app</v-icon></a>
+                      <a v-bind:href="msg.href" target="_blank" download><v-icon color="secondary">get_app</v-icon></a>
                     </v-card-text>
                   </div>
                   <div v-else>
@@ -72,9 +72,9 @@
                 </template>
                 <v-card class="elevation-2" min-width="300px" dark  color="secondary">
                   <div v-if="msg.href!=null">
-                      <v-card-text><a class="link-recibido" target="_blank" v-bind:href="msg.href">{{msg.mensaje}}</a>
+                      <v-card-text><a class="link-recibido" target="_blank" v-bind:href="msg.href" download>{{msg.mensaje}}</a>
                         <v-spacer></v-spacer>
-                        <a class="link-recibido" v-bind:href="msg.href" download><v-icon color="white">get_app</v-icon></a>
+                        <a class="link-recibido" v-bind:href="msg.href" target="_blank" download><v-icon color="white">get_app</v-icon></a>
                       </v-card-text>
                   </div>
                   <div v-else>
@@ -134,9 +134,6 @@ export default {
     timeout: 1000,
     text: 'Entregado.',
     message: '',
-    imageName: '',
-  	imageUrl: '',
-    imageFile: '',
     ruta: null,
     img: '',
     usuario: 'Juan',
@@ -201,39 +198,7 @@ export default {
             console.log('Streaming... sent ' + fileInfo.sent + ' bytes.');
           });
           uploader.on('complete', function(fileInfo) {
-            // console.log('Upload Complete', fileInfo);
-            // document.getElementById('action').addEventListener('click', function(){
-            //   console.log("data/"+fileInfo.name)
-            //   var liga = "http://127.0.0.1:3030/data/"+fileInfo.name;
-            //   var content = '';
-            //   var request = new XMLHttpRequest();
-            //   request.open('GET', liga, true);
-            //   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            //   request.responseType = 'blob';
-            
-            //   request.onload = function() {
-            //     // Only handle status code 200
-            //     if(request.status === 200) {
-            //     // Try to find out the filename from the content disposition `filename` value
-            //     var disposition = request.getResponseHeader('content-disposition');
-            //     var matches = /"([^"]*)"/.exec(disposition);
-            //     var name = liga.split('http://127.0.0.1:3030/data/')
-            //     var filename = (matches != null && matches[1] ? matches[1] : name);
-            //     this.ruta=filename;
-            //     // The actual download
-            //     var blob = new Blob([request.response]);
-            //     var link = document.createElement('a');
-            //     link.href = window.URL.createObjectURL(blob);
-            //     link.download = filename;
-            
-            //     document.body.appendChild(link);
-            //     link.click();
-            //     document.body.removeChild(link);
-            //     }
-            //     // some error handling should be done here...
-            //   };
-            //   request.send('content=' + content);
-            // });
+            console.log('Upload Complete', fileInfo);
           });
           uploader.on('error', function(err) {
             console.log('Error!', err);
@@ -242,9 +207,9 @@ export default {
             console.log('Aborted: ', fileInfo);
           });
           var fileEl = document.getElementById('file');
-          var liga = "redespolitecnica5.ddns.net/data/"+fileEl.value.replace('C:\\fakepath\\','');
-          var uploadIds = uploader.upload(fileEl);
-          auxMessage = liga.replace('redespolitecnica5.ddns.net/data/','')
+          var liga = "http://redespolitecnica5.ddns.net:3030/data/"+fileEl.value.replace('C:\\fakepath\\','');
+          uploader.upload(fileEl);
+          auxMessage = liga.replace('http://redespolitecnica5.ddns.net:3030/data/','')
           let time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
           let mensaje ={"usuario":this.usuario,"mensaje":auxMessage,"hora":time,"posicion":"right","avatar":this.avatar, "href":liga};
           socket.emit('maria', mensaje);
