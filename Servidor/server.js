@@ -6,21 +6,6 @@ const httpServer = http.Server(app);
 const io = require('socket.io')(httpServer);
 const SocketIOFile = require('socket.io-file');
 const cors = require('cors');
-// app.get('/', (req, res, next) => {
-// 	return res.sendFile(__dirname + '/client/index.html');
-// });
-
-// app.get('/app.js', (req, res, next) => {
-// 	return res.sendFile(__dirname + '/client/app.js');
-// });
-
-// app.get('/socket.io.js', (req, res, next) => {
-// 	return res.sendFile(__dirname + '/node_modules/socket.io-client/dist/socket.io.js');
-// });
-
-// app.get('/socket.io-file-client.js', (req, res, next) => {
-// 	return res.sendFile(__dirname + '/node_modules/socket.io-file-client/socket.io-file-client.js');
-// });
 
 app.use(cors());
 
