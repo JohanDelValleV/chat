@@ -48,7 +48,8 @@
               <v-card class="elevation-2" min-width="300px">
                 <div v-if="msg.href!=null">
                    <v-card-text><a target="_blank" v-bind:href="msg.href">{{msg.mensaje}}</a>
-                      <a class="link-recibido" v-bind:href="msg.href" download><v-spacer></v-spacer><v-icon color="secondary">get_app</v-icon></a>
+                      <v-spacer></v-spacer>
+                      <a v-bind:href="msg.href" download><v-icon color="secondary">get_app</v-icon></a>
                     </v-card-text>  
                 </div>
                   <div v-else>
@@ -124,7 +125,7 @@ import io from 'socket.io-client';
 import path from 'path';
 import $ from 'jquery';
 import SocketIOFileClient from 'socket.io-file-client';
-const socket = io('http://localhost:3030');
+const socket = io('redespolitecnica5.ddns.net:3030');
 var uploader = new SocketIOFileClient(socket);
 var auxMessage = '';
 var contador = 0;
@@ -241,9 +242,9 @@ export default {
             console.log('Aborted: ', fileInfo);
           });
           var fileEl = document.getElementById('file');
-          var liga = "http://127.0.0.1:3030/data/"+fileEl.value.replace('C:\\fakepath\\','');
+          var liga = "redespolitecnica5.ddns.net:3030/data/"+fileEl.value.replace('C:\\fakepath\\','');
           var uploadIds = uploader.upload(fileEl);
-          auxMessage = liga.replace('http://127.0.0.1:3030/data/','')
+          auxMessage = liga.replace('redespolitecnica5.ddns.net:3030/data/','')
           let time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
           let mensaje ={"usuario":this.usuario,"mensaje":auxMessage,"hora":time,"posicion":"right","avatar":this.avatar, "href":liga};
           socket.emit('juan', mensaje);
