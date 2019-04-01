@@ -127,6 +127,7 @@ import SocketIOFileClient from 'socket.io-file-client';
 const socket = io('http://localhost:3030');
 var uploader = new SocketIOFileClient(socket);
 var auxMessage = '';
+var contador = 0;
 export default {
   data: ()=> ({
     snackbar: false,
@@ -147,7 +148,7 @@ export default {
   }),
   mounted() {
     socket.on('connect', function () {
-      console.log(':)')
+      console.log(contador)
       
     });
     socket.on('maria',(mensaje)=>{
