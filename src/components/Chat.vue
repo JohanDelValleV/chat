@@ -3,6 +3,7 @@
       <v-toolbar dark color="primary">
           <img width="45px" :src="avatarRemitente">
          <v-toolbar-title class="white--text">{{remitente}}</v-toolbar-title>
+         <div id="typing"></div>
          <v-spacer></v-spacer>
       </v-toolbar>
       <v-snackbar
@@ -29,9 +30,6 @@
           <v-timeline
           align-top
           >
-          <!-- <v-slide-x-transition
-            group
-          > -->
           <div v-for="msg in messages" :key="msg.time">
               <div v-if="msg.usuario==usuario">
               <v-timeline-item
@@ -84,7 +82,6 @@
               </v-timeline-item> 
             </div>
           </div>
-              <!-- </v-slide-x-transition>    -->
             </v-timeline>
         </v-card-text>
     </v-container>
@@ -111,6 +108,7 @@
               v-model="message"
               height="75px"
               outline
+              id="input"
               @keyup.enter="send"
             ></v-textarea>
             <v-btn fab dark color="primary">
@@ -153,10 +151,20 @@ export default {
       this.avatarRemitente=mensaje["avatar"]
       this.messages.unshift(mensaje)
       socket.emit('callbackjuan',true)
+      document.getElementById('typing').innerHTML = '';
     })
     uploader.on('ready', function() {
       console.log('SocketIOFile ready to go!');
     });
+
+    document.getElementById('input').addEventListener('keypress', function(){
+      socket.emit('typing:juan')
+    });
+
+    socket.on('typing:maria', function(){
+      document.getElementById('typing').innerHTML=`<em>  está escribiendo</em>`
+    });
+
   },
   methods: {
     send(){
@@ -223,7 +231,14 @@ export default {
           this.messages=this.messages
     },
 
+  },
+  watch: {
+
+  },
+  computed: {
+    
   }
+
 }
 </script>
 
