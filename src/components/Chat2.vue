@@ -3,7 +3,7 @@
       <v-toolbar dark color="primary">
           <img width="45px" :src="avatarRemitente">
          <v-toolbar-title class="white--text">{{remitente}}</v-toolbar-title>
-         <div id="typing"></div>
+         <div id="typing" class="type"></div>
          <v-spacer></v-spacer>
       </v-toolbar>
       <v-snackbar
@@ -243,5 +243,8 @@ a{
 }
 .link-recibido{
   color: white;
+}
+.type {
+  padding-left: 10px;
 }
 </style>
