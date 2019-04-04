@@ -123,7 +123,7 @@ import io from 'socket.io-client';
 import path from 'path';
 import $ from 'jquery';
 import SocketIOFileClient from 'socket.io-file-client';
-const socket = io('redespolitecnica5.ddns.net:3030');
+const socket = io('157.230.166.88:3030');
 var uploader = new SocketIOFileClient(socket);
 var auxMessage = '';
 export default {
@@ -215,9 +215,9 @@ export default {
             console.log('Aborted: ', fileInfo);
           });
           var fileEl = document.getElementById('file');
-          var liga = "http://redespolitecnica5.ddns.net:3030/data/"+fileEl.value.replace('C:\\fakepath\\','');
+          var liga = "http://157.230.166.88:3030/data/"+fileEl.value.replace('C:\\fakepath\\','');
           uploader.upload(fileEl);
-          auxMessage = liga.replace('http://redespolitecnica5.ddns.net:3030/data/','')
+          auxMessage = liga.replace('http://157.230.166.88:3030/data/','')
           let time = (new Date()).toTimeString().replace(' GMT-0600 (Central Standard Time)','');
           let mensaje ={"usuario":this.usuario,"mensaje":auxMessage,"hora":time,"posicion":"right","avatar":this.avatar, "href":liga};
           socket.emit('maria', mensaje);
